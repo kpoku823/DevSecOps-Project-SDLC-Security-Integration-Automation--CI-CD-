@@ -4,7 +4,7 @@ import xml.etree.ElementTree as ET
 import pickle
 import jwt
 import urllib3
-from flask import Flask, request, escape
+from flask import Flask, request, escape, jsonify
 import json  # Added for safe deserialization
 
 
@@ -112,7 +112,11 @@ def parse_xml_route():
 @app.route('/deserialize', methods=['POST'])
 def deserialize_route():
     data = request.data
-    return insecure_deserialize(data)
+    try:
+        deserialized = insecure_deserialize(data)
+    except (ValueError, json.JSONDecodeError):
+        return jsonify({"error": "Invalid JSON payload"}), 400
+    return jsonify(deserialized)
 
 @app.route('/vulnerable_library')
 def vulnerable_library_route():
