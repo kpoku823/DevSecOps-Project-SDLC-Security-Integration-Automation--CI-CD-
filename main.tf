@@ -4,6 +4,7 @@ provider "aws" {
 resource "aws_s3_bucket" "terraform823" {
   bucket = "terraform823"
 }
+
 terraform {
   backend "s3" {
     # Replace this with your bucket name!
