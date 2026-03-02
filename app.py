@@ -60,8 +60,8 @@ def index():
 @app.route('/greet')
 def greet():
     name = request.args.get('name')
-    # Vulnerable to XSS, input is reflected without validation or sanitization
-    return f"Hello, {name}!"
+    # Escape user input to prevent XSS
+    return f"Hello, {escape(name)}!"
 
 # 8. **Insecure Deserialization**
 def insecure_deserialize(data):
