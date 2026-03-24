@@ -1,6 +1,6 @@
 import sqlite3
 import hashlib
-import xml.etree.ElementTree as ET
+from defusedxml import ElementTree as ET
 import pickle
 import jwt
 import urllib3
@@ -40,7 +40,8 @@ def store_password(password):
 
 # 4. **XML External Entities (XXE)**
 def parse_xml(xml_string):
-    # Vulnerable to XXE attacks
+    # Fixed: Using defusedxml to prevent XXE attacks
+    # defusedxml disables external entity expansion by default
     tree = ET.fromstring(xml_string)
     return tree.find("name").text
 
