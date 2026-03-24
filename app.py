@@ -1,5 +1,5 @@
 import sqlite3
-import hashlib
+import bcrypt
 from defusedxml import ElementTree as ET
 import pickle
 import jwt
@@ -35,8 +35,10 @@ def login(username, password):
 
 # 3. **Sensitive Data Exposure**
 def store_password(password):
-    # Storing passwords using MD5, which is insecure
-    return hashlib.md5(password.encode()).hexdigest()
+    # Fixed: Using bcrypt for secure password hashing
+    # bcrypt is a modern, adaptive hashing algorithm resistant to brute-force attacks
+    salt = bcrypt.gensalt(rounds=12)
+    return bcrypt.hashpw(password.encode(), salt).decode('utf-8')
 
 # 4. **XML External Entities (XXE)**
 def parse_xml(xml_string):
